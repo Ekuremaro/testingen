@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using testingen.Data;
 using testingen.Models;
 using testingen.ViewModel;
 
@@ -12,24 +14,57 @@ namespace testingen.Controllers
 {
     public class MoviesController : Controller
     {
+
+
+        private ApplicationDbContext _context;
+
+        public MoviesController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
         // GET
+
 
         public ActionResult Index()
         {
-
-            var movies = GetMovies();
-
+            var movies = _context.Movies.Include(c => c.Genre).ToList();
             return View(movies);
-
         }
 
-        private IEnumerable<Movie> GetMovies()
+        public ActionResult Details(int Id)
         {
-            return new List<Movie>
+            var movie = _context.Movies.Include(c => c.Genre).SingleOrDefault(c => c.Id == Id);
+            if (movie == null)
+                return HttpNotFound();
+
+            return View(movie);
+        }
+
+
+        public ActionResult Save(Movie movie)
+        {
+            if (movie.Id == 0)
+                _context.Movie.Add(movie);
+            else
             {
-                new Movie { Id = 1, Name = "Shrek" },
-                new Movie { Id = 2, Name = "Wall-e" }
-            };
+                var MovieInDb = _context.Movie.Single(c => c.Id == movie.Id);
+
+            }
+
+
+            return RedirectToAction("Index", "Movies");
+        }
+
+        public ActionResult New()
+        {
+            var genres = _context.Genre.ToList();
+            var viewModel = new NewMovieViewModel { Genres = genres };
+            return View(viewModel);
+        }
+
+        private ActionResult HttpNotFound()
+        {
+            throw new NotImplementedException();
         }
 
         public ActionResult Random()

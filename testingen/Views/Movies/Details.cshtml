@@ -1,0 +1,31 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model testingen.Models.Movie
+
+@{
+    ViewBag.Title = "Movies";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>
+    @Model.Name
+</h1>
+
+<div>
+    <ul>
+        <li>
+            Genre : @Model.Genre.Name
+        </li>
+        <li>
+            Release Date : @Model.ReleaseDate
+        </li>
+        <li>
+            Date Added : @Model.DateAdded
+        </li>
+        <li>
+            Number in Stock : @Model.NumberInStock
+        </li>
+    </ul>
+
+</div>
