@@ -41,25 +41,48 @@ namespace testingen.Controllers
         }
 
 
-        public ActionResult Save(Movie movie)
-        {
-            if (movie.Id == 0)
-                _context.Movie.Add(movie);
-            else
-            {
-                var MovieInDb = _context.Movie.Single(c => c.Id == movie.Id);
 
-            }
-
-
-            return RedirectToAction("Index", "Movies");
-        }
 
         public ActionResult New()
         {
             var genres = _context.Genre.ToList();
-            var viewModel = new NewMovieViewModel { Genres = genres };
-            return View(viewModel);
+            var viewModel = new MovieFormViewModel { Genres = genres };
+            return View("MovieForm", viewModel);
+        }
+
+        public ActionResult Edit(int Id)
+        {
+            var movie = _context.Movie.SingleOrDefault(c => c.Id == Id);
+
+            if (movie == null)
+                return HttpNotFound();
+
+            var genres = _context.Genre.ToList();
+
+            var viewModel = new MovieFormViewModel { Genres = genres, Movie = movie };
+
+            return View("MovieForm", viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult Save(Movie movie)
+        {
+            if (movie.Id == 0)
+            {
+                movie.DateAdded = DateTime.Now;
+                _context.Movies.Add(movie);
+            }
+            else
+            {
+                var movieInDb = _context.Movies.Single(m => m.Id == movie.Id);
+                movieInDb.Name = movie.Name;
+                movieInDb.GenreId = movie.GenreId;
+                movieInDb.NumberInStock = movie.NumberInStock;
+                movieInDb.ReleaseDate = movie.ReleaseDate;
+            }
+
+            _context.SaveChanges();
+            return RedirectToAction("Index", "Movies");
         }
 
         private ActionResult HttpNotFound()
@@ -88,21 +111,7 @@ namespace testingen.Controllers
 
         }
 
-        public ActionResult Edit(int? pageIndex, string sortBy)
-        {
-            if (!pageIndex.HasValue)
-            {
-                pageIndex = 1;
 
-            }
-
-            if (String.IsNullOrWhiteSpace(sortBy))
-            {
-                sortBy = "Name";
-            }
-
-            return Content($"pageIndex={pageIndex}&sortBy={sortBy}");
-        }
 
         [Route("movies/released/{year}/{{month:regex(\\d{4}):range(1,12)}}")]
         public ActionResult ByReleaseDate(int year, int month)

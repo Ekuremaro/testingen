@@ -19,6 +19,8 @@ namespace testingen.Models
         [Display(Name = "Number in Stock")]
         public byte NumberInStock { get; set; }
 
+        [Required]
+        [Display(Name = "Genre")]
         public Genre Genre { get; set; }
 
         public byte GenreId { get; set; }
