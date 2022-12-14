@@ -8,10 +8,10 @@ namespace testingen.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "DiscountRrate",
-                table: "MembershipType",
-                newName: "DiscountRate");
+            //migrationBuilder.RenameColumn(
+            //    name: "DiscountRrate",
+            //    table: "MembershipType",
+            //    newName: "DiscountRate");
 
             migrationBuilder.AddColumn<string>(
                 name: "Name",

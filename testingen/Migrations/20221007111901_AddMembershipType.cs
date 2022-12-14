@@ -22,7 +22,7 @@ namespace testingen.Migrations
                     Id = table.Column<byte>(type: "tinyint", nullable: false),
                     SignUpFee = table.Column<short>(type: "smallint", nullable: false),
                     DurationInMonths = table.Column<byte>(type: "tinyint", nullable: false),
-                    DiscountRrate = table.Column<byte>(type: "tinyint", nullable: false)
+                    DiscountRate = table.Column<byte>(type: "tinyint", nullable: false)
                 },
                 constraints: table =>
                 {

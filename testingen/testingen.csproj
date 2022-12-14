@@ -14,11 +14,15 @@
     <None Remove="ViewModel\" />
     <None Remove="Swashbuckle.AspNetCore" />
     <None Remove="Views\Movies\" />
+    <None Remove="Controllers\API\" />
+    <None Remove="Dtos\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="ViewModel\" />
     <Folder Include="Views\Movies\" />
+    <Folder Include="Controllers\API\" />
+    <Folder Include="Dtos\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.9" />

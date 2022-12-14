@@ -59,14 +59,25 @@ namespace testingen.Controllers
 
             var genres = _context.Genre.ToList();
 
-            var viewModel = new MovieFormViewModel { Genres = genres, Movie = movie };
+            var viewModel = new MovieFormViewModel(movie) { Genres = genres };
 
             return View("MovieForm", viewModel);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Save(Movie movie)
         {
+            if (!ModelState.IsValid)
+            {
+                var viewModel = new MovieFormViewModel(movie)
+                {
+                    Genres = _context.Genre.ToList()
+                };
+
+                return View("MovieForm", viewModel);
+            }
+
             if (movie.Id == 0)
             {
                 movie.DateAdded = DateTime.Now;

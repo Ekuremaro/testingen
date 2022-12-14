@@ -1,9 +1,11 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Xml.Linq;
+using testingen.Models;
 
-namespace testingen.Models
+namespace testingen.Dtos
 {
-    public class Customer
+    public class CustomerDto
     {
         public int Id { get; set; }
 
@@ -13,16 +15,10 @@ namespace testingen.Models
 
         public bool IsSubscribedToNewsletter { get; set; }
 
-        [Required(ErrorMessage = "Please choose a membership type")]
         public MembershipType? MembershipType { get; set; }
 
-        [Display(Name = "Membership Type")]
-        public byte MembershipTypeId { get; set; }
-
-        [Display(Name = "Date of Birth")]
         [Min18YearsIfAMember]
         public DateTime? BirthDate { get; set; }
     }
-
 }
 

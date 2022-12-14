@@ -46,8 +46,15 @@ namespace testingen.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Save(Customer customer)
         {
+            if (ModelState.IsValid)
+            {
+                var viewModel = new NewCustomerViewModel { Customer = customer, MembershipTypes = _context.MembershipType.ToList() };
+                return View("New", viewModel);
+            }
+
             if (customer.Id == 0)
                 _context.Customers.Add(customer);
             else
@@ -66,7 +73,7 @@ namespace testingen.Controllers
         {
 
             var membershipTypes = _context.MembershipType.ToList();
-            var viewModel = new NewCustomerViewModel { MembershipTypes = membershipTypes };
+            var viewModel = new NewCustomerViewModel { MembershipTypes = membershipTypes, Customer = new Customer() };
             return View(viewModel);
         }
 
